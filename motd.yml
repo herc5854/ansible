@@ -1,0 +1,8 @@
+- hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: motd
+      ansible.builtin.copy:
+        src: motd
+        dest: /etc/motd
