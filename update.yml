@@ -7,6 +7,9 @@
 
     - name: Upgrade all packages on servers
       apt: upgrade=dist force_apt_get=yes
+      
+    - name: remove old packages on servers
+      apt: autoremove=yes
 
     - name: remove old packages on servers
       apt: autoremove=yes
