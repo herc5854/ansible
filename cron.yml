@@ -1,0 +1,10 @@
+- hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: install cron job (ansible-pull)
+      cron:
+        user: david
+        name: "ansible provision"
+        minute: "*/10"
+        job: "/usr/bin/ansible-pull -o -U https://github.com/herc5854/ansible.git > /dev/null"
