@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: test
   become: true
   become_user: root
   tasks:
@@ -7,4 +7,4 @@
         user: david
         name: "ansible provision"
         minute: "*/10"
-        job: "/usr/bin/ansible-pull -o -U https://github.com/herc5854/ansible.git > /dev/null"
+        job: "/usr/bin/ansible-pull -o -U https://github.com/herc5854/ansible.git > /var/log/cronupdate"
