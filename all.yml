@@ -30,12 +30,5 @@
         src: motd
         dest: /etc/motd
 
-    - name: install packages
-      ansible.builtin.apt:
-        name:
 
-          - git
 
-          - htop
-
-          - fail2ban
