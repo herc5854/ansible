@@ -1,31 +1,28 @@
-- name: Create a Proxmox VM
-hosts: proxmox
-gather_facts: false
-vars:
-proxmox_api_user: 'root'
-proxmox_api_password: 'dcw9021#'
-proxmox_api_host: 'pve1'
-proxmox_api_port: '8006'
-proxmox_vm_name: 'testansible'
-proxmox_vm_template: 'debian-12.0.0-amd64-netinst.iso'
-proxmox_vm_node:'local'
-proxmox_vm_cores: 2
-proxmox_vm_memory: 4096
-proxmox_vm_disk_size: 20G
+---
+- name: Create VM on Proxmox
+  become: true
+  become_user: root
+  hosts: proxmox
+  gather_facts: false
 
-- name: Create Proxmox VM
-proxmox_kvm:
-api_user: "{{ proxmox_api_user }}"
-api_password: "{{ proxmox_api_password }}"
-api_host: "{{ proxmox_api_host }}"
-api_port: "{{ proxmox_api_port }}"
-vmid: 101 # ID for the new VM
-node: "{{ proxmox_vm_node }}"
-name: "{{ proxmox_vm_name }}"
-cores: "{{ proxmox_vm_cores }}"
-memory: "{{ proxmox_vm_memory }}"
-disks:
-- size: "{{ proxmox_vm_disk_size }}"
-storage: vm-storage # Storage pool for the disk
-template: "{{ proxmox_vm_template }}"
-state: present
+  vars:
+    proxmox_api_user: "root"
+    proxmox_api_password: "dcw9021#"
+    proxmox_api_host: "192.168.0.145:8006"
+    proxmox_api_realm: "pam"  # You can use other realms like pve or any other as per your Proxmox configuration
+
+  tasks:
+    - name: Create VM on Proxmox
+      proxmox_kvm:
+        node: "{{ proxmox_api_host }}"
+        vmid: 1000  # Unique ID for the VM
+        name: "testansible"
+        ostemplate: "local:vztmpl/debian-12.0.0-amd64-netinst.iso"
+        memory: 1024
+        cores: 1
+        net0: virtio,bridge=vmbr0
+        onboot: yes
+        state: present
+        username: "{{ proxmox_api_user }}"
+        password: "{{ proxmox_api_password }}"
+        realm: "{{ proxmox_api_realm }}"
