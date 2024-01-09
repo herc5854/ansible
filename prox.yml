@@ -1,0 +1,27 @@
+- name: Proxmox stuff
+  hosts: 192.168.0.145
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - set_fact:
+        yeppers: "ubuntu-{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}"
+    
+    - proxmox_kvm:
+        api_user    : root@pam
+        api_password: dcw9021#
+        api_host    : 192.168.0.145
+        clone       : ubuntu-cloud
+        name        : "{{ yeppers }}"  # The target VM name
+        node        : pve1
+        storage     : local-lvm
+        format      : qcow2
+        vmid        : 1000
+        #newid       : 1001
+
+    - proxmox_kvm:
+        api_user    : root@pam
+        api_password: dcw9021#
+        api_host    : 192.168.0.145
+        name        : "{{ yeppers }}"  # The target VM name
+        node        : pve1
+        state       : started
