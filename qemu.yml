@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: main
   become: true
   become_user: root
   tasks:
@@ -7,3 +7,5 @@
         name: 
       
           - qemu-guest-agent
+
+          - lxc-utils

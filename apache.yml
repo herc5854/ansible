@@ -1,4 +1,4 @@
-- hosts: webserver
+- hosts: new
   become: true
   become_user: root
   tasks:

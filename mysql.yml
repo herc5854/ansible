@@ -1,0 +1,23 @@
+---
+- name: Install and configure MySQL
+  hosts: dbservers
+  become: yes
+  tasks:
+    - name: Install MySQL server
+      apt:
+        name: mysql-server
+        state: present
+
+    - name: Ensure MySQL is running
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: Set MySQL root password
+      mysql_user:
+        name: root
+        password: "dcw9021#"
+        host_all: yes
+        priv: "*.*:ALL,GRANT"
+        state: present

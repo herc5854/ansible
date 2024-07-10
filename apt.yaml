@@ -1,0 +1,18 @@
+- hosts: main
+  become: true
+  become_user: root
+  tasks:
+    - name: Create a file
+      file:
+        path: /etc/apt/apt.conf.d/00aptproxy
+        state: touch
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Add information to the file
+      blockinfile:
+        path: /etc/apt/apt.conf.d/00aptproxy
+        block: |
+          Acquire::http::Proxy "http://192.168.0.96:3142";
+        insertafter: EOF

@@ -1,0 +1,22 @@
+---
+- name: User management
+  hosts: main
+  become: yes
+  vars:
+    users:
+      - { name: 'david', groups: 'sudo', ssh_key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFQFtxHWpGsOmB8YEbZ79PEpmP3PE5vk/tjKrK1kDvAv3PPLzxCmjGCB9mbWipGtam7/5T0oSGuLnvpDkbvkaThmQu400gbsazcD24JExIKN+JNHyd9XBZNykfRC/eVQT0GyMtb/RpTQ9eumVzgIMaXOhXWSAI4q/vpJBV6WL1JUKXJ8Atzz847Ht/8nzG9gsY21ssVTBFP2iSxC8kPAy+euvRTD5daSqY87+ajdFnw0qsW5rsPjxbm2PrFjxUEGvCdvmyJnOLMJonSgA6SDCwFIWYKoJlLaF+0fcYLklMvCAZSpUrybJrJR1jm3JSQUGtmtepMCy+MnuQOnjdTh2/dJWzLnXOOSbTzgcwqyrNX1Aj04ZJOHxtp/IR3LwTjCZxUIq6s+hfWFhSUEH6FAp3gFcLXc0o1kRB9J0CDVhRX07JhmBlO2xJcCzkuI/9Td4EocD8g0f78PRlqYaV7EO2iFDEiOx+tRh5qUKRzgpG8uycigIPJd+XJumU5qp7GiU= david@Gaming' }
+
+  tasks:
+    - name: Add users
+      user:
+        name: "{{ item.name }}"
+        groups: "{{ item.groups }}"
+        state: present
+        shell: /bin/bash
+      with_items: "{{ users }}"
+
+    - name: Add authorized keys
+      authorized_key:
+        user: "{{ item.name }}"
+        key: "{{ item.ssh_key }}"
+      with_items: "{{ users }}"

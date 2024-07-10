@@ -12,7 +12,7 @@
         api_host    : 192.168.0.145
         clone       : ubuntu-cloud
         name        : "{{ yeppers }}"  # The target VM name
-        node        : pve1
+        node        : main
         storage     : local-lvm
         format      : qcow2
         vmid        : 1000
@@ -23,5 +23,5 @@
         api_password: dcw9021#
         api_host    : 192.168.0.145
         name        : "{{ yeppers }}"  # The target VM name
-        node        : pve1
+        node        : main
         state       : started

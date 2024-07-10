@@ -1,13 +1,18 @@
-- hosts: main
+- hosts: prox
   become: true
   become_user: root
   tasks:
     - name: Update apt repo and cache on all Debian/Ubuntu boxes
-      apt: force_apt_get=yes
+      apt: 
+        update_cache: yes
 
     - name: Upgrade all packages on servers
-      apt: upgrade=dist force_apt_get=yes
+      apt: 
+        upgrade: dist
       
+    - name: remove old packages on servers
+      apt: autoremove=yes
+
     - name: remove old packages on servers
       apt: autoremove=yes
 

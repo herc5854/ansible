@@ -1,6 +1,6 @@
 ---
 - name: Create User
-  hosts: proxmox
+  hosts: new
   become: yes  # Run tasks with sudo privileges
 
   vars:
@@ -9,17 +9,17 @@
     # You can also use an encrypted password, generate it with "mkpasswd" or "openssl passwd -1"
 
   tasks:
-    - name: Create user
-      user:
-        name: "{{ username }}"
-        password: "{{ password | password_hash('sha512', 'mysecretsalt') }}"  # You can change the hashing algorithm and salt
-        state: present
-        createhome: yes
+#    - name: Create user
+#      user:
+#        name: "{{ username }}"
+#        password: "{{ password | password_hash('sha512', 'mysecretsalt') }}"  # You can change the hashing algorithm and salt
+#        state: present
+#        createhome: yes
 
     - name: Add user to sudoers (optional)
       lineinfile:
         dest: /etc/sudoers
-        line: "{{ username }} ALL=(ALL:ALL) ALL"
+        line: "{{ username }} ALL=(ALL:ALL) NOPASSWD:ALL"
         validate: 'visudo -cf %s'
 
     - name: Print login information
