@@ -1,0 +1,32 @@
+---
+- hosts: new
+  become: true
+  pre_tasks:
+
+  - name: install updates for ubuntu
+    tags: always
+    ansible.builtin.apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: create new user
+    tags: always
+    ansible.builtin.user:
+      name: david
+      groups: root
+
+  - name: add sudoers file for david
+    tags: always
+    ansible.builtin.copy:
+      src: sudoer_david
+      dest: /etc/sudoers.d/david
+      owner: root
+      group: root
+      mode: 0440
+
+  - name: add ssh key for david
+    tags: always
+    ansible.builtin.authorized_key:
+      user: david
+      key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxwoas/nTkEZvoieeP1J2VvYf4WKiCOg6p8eBfmb3rMkagrWKJwyPYtYIwtKsatNjhZBOwzl9s7CCzmHEmNwEJuTJR1GRJtF0O+S1gNrb5gBRdPvSh3C1zrTKnCbfx/PFwmaG4rZdELR5iE0zyz3BAHDjZE4mqU/Dfq7vgsHMOiaeSsI0Q2eOm1/45vomMsQfnIBWSdiAYzLQk4r3kkfAKZiH2PPqEvxHpmRei6G8hpvEFwUabSvNmmFaqJWxO1sdZBJOqToV54uq8CDK16eR631L6/bwydjqQILe0jp+jmarNbqxSyDzwutuSnO4jh/qpZzrB7Km/Ge+yXUCje5bR0weEQJPfNV6nnL98+VCWxzrQmfg072ThdmbtcW8HODsdBvMa9Li9Uocr09HGUQJU8MIAWpuYxc5hnfs3JDHt83+DXmJs6n8tAks52CtorPBFmTZCvV+Vr4VGpmBTMG4zaIDF5sFZ28y7OfEs7uJ5/zvqneYkJoAms2RgOzuhzgndfL2WeVCZD6K9sjcYhgS2IuNpM4sh8B5U/qXeILpWTz8TzXSCxqo/a/gQj1ioghcnYbLHu+dQi2/2xlDc97g9aL4mxLgbFq8CYdDth0UrbILpmm7i0K+vK4cYTztk8Ec+9kL/hhk11dUJ0d5pskmKGowwpXDuaJvEb8BXidTUww== david@ansible"
